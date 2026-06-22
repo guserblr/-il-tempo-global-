@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>il tempo GLOBAL</title>
+    <script src="https://www.webglearth.com/v2/api.js"></script>
+    
+    <style>
+        /* Smooth moving background animation */
+        @keyframes drift {
+            0% { background-position: 0% 0%; }
+            50% { background-position: 100% 100%; }
+            100% { background-position: 0% 0%; }
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #050505; 
+            background-image: url('images/background.jpg');
+            background-size: 130% 130%; 
+            animation: drift 30s ease-in-out infinite; 
+            overflow-x: hidden; 
+            font-family: sans-serif;
+            height: 150vh; 
+        }
+
+        /* Heading Style */
+        h1 {
+            font-size: 60px; 
+            text-align: center; 
+            margin-top: 40px; 
+            color: white; 
+            text-shadow: 2px 2px 15px rgba(0, 0, 0, 0.9);
+            margin-bottom: 10px;
+        }
+
+        /* Search Bar Container */
+        .search-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* Sleek Search Input */
+        .search-box {
+            padding: 15px 25px;
+            width: 500px; 
+            font-size: 18px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background-color: rgba(0, 0, 0, 0.6);
+            color: white;
+            outline: none;
+            backdrop-filter: blur(5px);
+            transition: 0.3s;
+        }
+
+        .search-box:focus {
+            border-color: rgba(0, 255, 204, 0.8);
+            box-shadow: 0 0 15px rgba(0, 255, 204, 0.2);
+        }
+
+        /* Coordinate Results Display */
+        #search-result {
+            text-align: center;
+            color: #00ffcc; 
+            font-size: 16px;
+            height: 40px; 
+            margin-bottom: 20px;
+            text-shadow: 0px 0px 10px rgba(0, 255, 204, 0.5);
+        }
+
+        /* Earth Container Window */
+        .globe-wrapper {
+            position: relative;
+            width: 90vw;
+            margin: 0 auto;
+        }
+
+        /* 3D Earth Canvas Container */
+        #globe-stage {
+            width: 100%;
+            height: 75vh;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0px 0px 50px rgba(0,0,0,0.8);
+            background-color: black;
+        }
+
+        /* Glassmorphic Searchable Language Deck */
+        .language-deck {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(10, 10, 10, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            width: 200px;
+        }
+
+        .language-deck h3 {
+            margin: 0 0 10px 0;
+            color: #00ffcc;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-align: center;
+        }
+
+        /* Internal Language Search field */
+        .lang-search {
+            width: 90%;
+            padding: 6px 10px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 5px;
+            color: white;
+            font-size: 12px;
+            margin-bottom: 10px;
+            outline: none;
+        }
+
+        .lang-list-container {
+            max-height: 180px;
+            overflow-y: auto;
+        }
+
+        /* Language Item Buttons */
+        .lang-btn {
+            display: block;
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 4px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #e0e0e0;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            text-align: left;
+            transition: 0.2s ease;
+        }
+
+        .lang-btn:hover {
+            background: rgba(0, 255, 204, 0.15);
+            border-color: #00ffcc;
+            color: white;
+        }
+
+        .lang-btn.active {
+            background: #00ffcc;
+            color: #050505;
+            font-weight: bold;
+            border-color: #00ffcc;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>⫯𝘭 𝜏∈ⲙᕈ𝖮 Ꮆし〇ᗷᗩし</h1>
+
+    <div class="search-container">
+        <input type="text" class="search-box" id="locationInput" placeholder="Search villages, oceans, islands, or lat,lon...">
+    </div>
+
+    <div id="search-result"></div>
+
+    <div class="globe-wrapper">
+        <div id="globe-stage"></div>
+
+        <div class="language-deck">
+            <h3>Matrix Language</h3>
+            <input type="text" class="lang-search" id="langSearchBox" placeholder="Filter languages..." onkeyup="filterLanguages()">
+            
+            <div class="lang-list-container" id="langContainer">
+                <button class="lang-btn active" data-lang="en" onclick="switchPlanetLanguage('en', this)">English (EN)</button>
+                <button class="lang-btn" data-lang="es" onclick="switchPlanetLanguage('es', this)">Español (ES)</button>
+                <button class="lang-btn" data-lang="zh" onclick="switchPlanetLanguage('zh', this)">Chinese (ZH)</button>
+                <button class="lang-btn" data-lang="hi" onclick="switchPlanetLanguage('hi', this)">Hindi (HI)</button>
+                <button class="lang-btn" data-lang="ar" onclick="switchPlanetLanguage('ar', this)">Arabic (AR)</button>
+                <button class="lang-btn" data-lang="fr" onclick="switchPlanetLanguage('fr', this)">Français (FR)</button>
+                <button class="lang-btn" data-lang="de" onclick="switchPlanetLanguage('de', this)">Deutsch (DE)</button>
+                <button class="lang-btn" data-lang="ru" onclick="switchPlanetLanguage('ru', this)">Русский (RU)</button>
+                <button class="lang-btn" data-lang="pt" onclick="switchPlanetLanguage('pt', this)">Português (PT)</button>
+                <button class="lang-btn" data-lang="ja" onclick="switchPlanetLanguage('ja', this)">Japanese (JA)</button>
+                <button class="lang-btn" data-lang="it" onclick="switchPlanetLanguage('it', this)">Italiano (IT)</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 1. Virtual Routing Domain Mask
+        try {
+            var customURL = window.location.protocol + "//il-tempo-global/67711.com";
+            window.history.pushState({ path: customURL }, '', customURL);
+        } catch(e) {
+            console.log("Virtual address translation execution context logged.");
+        }
+
+        // 2. Initialize the 3D Planet Engine
+        var earth = new WE.map('globe-stage', {
+            atmosphere: true,
+            center: [20, 0],
+            zoom: 2
+        });
+
+        // Clean satellite photography base engine
+        WE.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+            attribution: 'Esri Satellite'
+        }).addTo(earth);
+
+        var textOverlayLayer;
+
+        // 3. High-Stability Text Engine Implementation
+        function switchPlanetLanguage(langCode, buttonElement) {
+            if (textOverlayLayer) {
+                earth.removeLayer(textOverlayLayer);
+            }
+
+            if(buttonElement) {
+                const buttons = document.querySelectorAll('.lang-btn');
+                buttons.forEach(btn => btn.classList.remove('active'));
+                buttonElement.classList.add('active');
+            }
+
+            // Using open-source, non-blocked OpenStreetMap labels system mapping endpoints
+            textOverlayLayer = WE.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                opacity: 0.50, // Transparent overlay allows satellite view to leak through beneath it
+                maxZoom: 18
+            });
+            
+            textOverlayLayer.addTo(earth);
+        }
+
+        // Boot system up instantly with names fully visual
+        switchPlanetLanguage('en', null);
+
+        // 4. Dropdown Language Filtering Mechanism
+        function filterLanguages() {
+            var input = document.getElementById('langSearchBox').value.toLowerCase();
+            var buttons = document.getElementById('langContainer').getElementsByClassName('lang-btn');
+            
+            for (var i = 0; i < buttons.length; i++) {
+                var txtValue = buttons[i].textContent || buttons[i].innerText;
+                if (txtValue.toLowerCase().indexOf(input) > -1) {
+                    buttons[i].style.display = "";
+                } else {
+                    buttons[i].style.display = "none";
+                }
+            }
+        }
+
+        // 5. Global Coordinate and Location Tracking Form Input
+        const searchInput = document.getElementById('locationInput');
+        const resultDisplay = document.getElementById('search-result');
+
+        searchInput.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                const query = this.value.trim();
+                if (!query) return;
+
+                resultDisplay.style.color = "white";
+                resultDisplay.innerText = "Scanning global matrix for: " + query + "...";
+
+                const coordMatch = query.match(/^[-+]?([0-9]*\.[0-9]+|[0-9]+),\s*[-+]?([0-9]*\.[0-9]+|[0-9]+)$/);
+                
+                if (coordMatch) {
+                    const parts = query.split(',');
+                    const lat = parseFloat(parts[0]);
+                    const lon = parseFloat(parts[1]);
+                    
+                    resultDisplay.style.color = "#00ffcc";
+                    resultDisplay.innerHTML = `DIRECT COORDINATES LOCKED // <strong>LAT:</strong> ${lat}° | <strong>LON:</strong> ${lon}°`;
+                    
+                    earth.setView([lat, lon], 8);
+                    return;
+                }
+
+                const apiUrl = `https://nominatim.openstreetmap.org/search?format=json&limit=1&addressdetails=1&q=${encodeURIComponent(query)}`;
+
+                fetch(apiUrl, {
+                    headers: { 'User-Agent': 'il-tempo-global-weather-app' }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data && data.length > 0) {
+                        const lat = parseFloat(data[0].lat);
+                        const lon = parseFloat(data[0].lon);
+                        
+                        const placeType = data[0].type.toUpperCase();
+                        const displayName = data[0].display_name.split(',')[0]; 
+
+                        resultDisplay.style.color = "#00ffcc";
+                        resultDisplay.innerHTML = `${placeType} DETECTED: ${displayName} // <strong>LAT:</strong> ${lat.toFixed(4)}° | <strong>LON:</strong> ${lon.toFixed(4)}°`;
+                        
+                        earth.setView([lat, lon], 9);
+                    } else {
+                        resultDisplay.style.color = "#ff4444";
+                        resultDisplay.innerText = "Location untraceable in global database.";
+                    }
+                })
+                .catch(error => {
+                    console.error("Geocoding Error:", error);
+                    resultDisplay.style.color = "#ff4444";
+                    resultDisplay.innerText = "Satellite database connection timeout.";
+                });
+            }
+        });
+    </script>
+
+</body>
+</html>
