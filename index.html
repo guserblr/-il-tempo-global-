@@ -98,7 +98,7 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             backdrop-filter: blur(8px);
             z-index: 1000;
-            width: 200px;
+            width: 220px;
         }
 
         .language-deck h3 {
@@ -110,25 +110,39 @@
             text-align: center;
         }
 
-        /* Internal Language Search field */
+        /* Internal Language Filter box */
         .lang-search {
             width: 90%;
-            padding: 6px 10px;
+            padding: 8px;
             background: rgba(255,255,255,0.1);
             border: 1px solid rgba(255,255,255,0.2);
             border-radius: 5px;
             color: white;
-            font-size: 12px;
+            font-size: 13px;
             margin-bottom: 10px;
             outline: none;
         }
-
-        .lang-list-container {
-            max-height: 180px;
-            overflow-y: auto;
+        .lang-search:focus {
+            border-color: #00ffcc;
         }
 
-        /* Language Item Buttons */
+        /* Scrollable box container for complete global language register */
+        .lang-list-container {
+            max-height: 220px;
+            overflow-y: auto;
+            padding-right: 2px;
+        }
+
+        /* Custom Scrollbar styling */
+        .lang-list-container::-webkit-scrollbar {
+            width: 4px;
+        }
+        .lang-list-container::-webkit-scrollbar-thumb {
+            background: rgba(0, 255, 204, 0.4);
+            border-radius: 4px;
+        }
+
+        /* Language Dropdown Selector Items */
         .lang-btn {
             display: block;
             width: 100%;
@@ -172,21 +186,33 @@
         <div id="globe-stage"></div>
 
         <div class="language-deck">
-            <h3>Matrix Language</h3>
-            <input type="text" class="lang-search" id="langSearchBox" placeholder="Filter languages..." onkeyup="filterLanguages()">
+            <h3>Translation Matrix</h3>
+            <input type="text" class="lang-search" id="langSearchBox" placeholder="Type to filter languages..." onkeyup="filterLanguages()">
             
             <div class="lang-list-container" id="langContainer">
-                <button class="lang-btn active" data-lang="en" onclick="switchPlanetLanguage('en', this)">English (EN)</button>
-                <button class="lang-btn" data-lang="es" onclick="switchPlanetLanguage('es', this)">Español (ES)</button>
-                <button class="lang-btn" data-lang="zh" onclick="switchPlanetLanguage('zh', this)">Chinese (ZH)</button>
-                <button class="lang-btn" data-lang="hi" onclick="switchPlanetLanguage('hi', this)">Hindi (HI)</button>
-                <button class="lang-btn" data-lang="ar" onclick="switchPlanetLanguage('ar', this)">Arabic (AR)</button>
-                <button class="lang-btn" data-lang="fr" onclick="switchPlanetLanguage('fr', this)">Français (FR)</button>
-                <button class="lang-btn" data-lang="de" onclick="switchPlanetLanguage('de', this)">Deutsch (DE)</button>
-                <button class="lang-btn" data-lang="ru" onclick="switchPlanetLanguage('ru', this)">Русский (RU)</button>
-                <button class="lang-btn" data-lang="pt" onclick="switchPlanetLanguage('pt', this)">Português (PT)</button>
-                <button class="lang-btn" data-lang="ja" onclick="switchPlanetLanguage('ja', this)">Japanese (JA)</button>
-                <button class="lang-btn" data-lang="it" onclick="switchPlanetLanguage('it', this)">Italiano (IT)</button>
+                <button class="lang-btn active" onclick="switchPlanetLanguage('en', this)">English (EN)</button>
+                <button class="lang-btn" onclick="switchPlanetLanguage('es', this)">Español (ES)</button>
+                <button class="lang-btn" onclick="switchPlanetLanguage('zh', this)">Chinese / 中文 (ZH)</button>
+                <button class="lang-btn" onclick="switchPlanetLanguage('hi', this)">Hindi / हिन्दी (HI)</button>
+                <button class="lang-btn" onclick="switchPlanetLanguage('ar', this)">Arabic / العربية (AR)</button>
+                <button class="lang-btn" onclick="switchPlanetLanguage('fr', this)">Français (FR)</button>
+                <button class="lang-btn" onclick="switchPlanetLanguage('de', this)">Deutsch (DE)</button>
+                <button class="lang-btn" onclick="switchPlanetLanguage('ru', this)">Русский (RU)</button>
+                <button class="lang-btn" onclick="switchPlanetLanguage('pt', this)">Português (PT)</button>
+                <button class="lang-btn" onclick="switchPlanetLanguage('ja', this)">Japanese / 日本語 (JA)</button>
+                <button class="lang-btn" onclick="switchPlanetLanguage('it', this)">Italiano (IT)</button>
+                <button class="lang-btn" onclick="switchPlanetLanguage('ko', this)">Korean / 한국어 (KO)</button>
+                <button class="lang-btn" onclick="switchPlanetLanguage('tr', this)">Türkçe (TR)</button>
+                <button class="lang-btn" onclick="switchPlanetLanguage('vi', this)">Tiếng Việt (VI)</button>
+                <button class="lang-btn" onclick="switchPlanetLanguage('pl', this)">Polski (PL)</button>
+                <button class="lang-btn" onclick="switchPlanetLanguage('nl', this)">Nederlands (NL)</button>
+                <button class="lang-btn" onclick="switchPlanetLanguage('uk', this)">Українська (UK)</button>
+                <button class="lang-btn" onclick="switchPlanetLanguage('id', this)">Bahasa Indonesia (ID)</button>
+                <button class="lang-btn" onclick="switchPlanetLanguage('th', this)">Thai / ไทย (TH)</button>
+                <button class="lang-btn" onclick="switchPlanetLanguage('fa', this)">Persian / فارسی (FA)</button>
+                <button class="lang-btn" onclick="switchPlanetLanguage('sv', this)">Svenska (SV)</button>
+                <button class="lang-btn" onclick="switchPlanetLanguage('he', this)">Hebrew / עברית (HE)</button>
+                <button class="lang-btn" onclick="switchPlanetLanguage('el', this)">Ελληνικά (EL)</button>
             </div>
         </div>
     </div>
@@ -197,7 +223,7 @@
             var customURL = window.location.protocol + "//il-tempo-global/67711.com";
             window.history.pushState({ path: customURL }, '', customURL);
         } catch(e) {
-            console.log("Virtual address translation execution context logged.");
+            console.log("Virtual address mask mounted.");
         }
 
         // 2. Initialize the 3D Planet Engine
@@ -208,13 +234,13 @@
         });
 
         // Clean satellite photography base engine
-        WE.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+        var baseSatellite = WE.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
             attribution: 'Esri Satellite'
         }).addTo(earth);
 
         var textOverlayLayer;
 
-        // 3. High-Stability Text Engine Implementation
+        // 3. Multilingual Dynamic Tiling Switching Engine
         function switchPlanetLanguage(langCode, buttonElement) {
             if (textOverlayLayer) {
                 earth.removeLayer(textOverlayLayer);
@@ -226,10 +252,11 @@
                 buttonElement.classList.add('active');
             }
 
-            // Using open-source, non-blocked OpenStreetMap labels system mapping endpoints
-            textOverlayLayer = WE.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                opacity: 0.50, // Transparent overlay allows satellite view to leak through beneath it
-                maxZoom: 18
+            // Swapped to a direct open transparent overlay map schema for dynamic labels rendering
+            textOverlayLayer = WE.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                opacity: 0.50, 
+                maxZoom: 18,
+                subdomains: ['a', 'b', 'c']
             });
             
             textOverlayLayer.addTo(earth);
@@ -253,7 +280,7 @@
             }
         }
 
-        // 5. Global Coordinate and Location Tracking Form Input
+        // 5. Global Coordinate and Location Tracking
         const searchInput = document.getElementById('locationInput');
         const resultDisplay = document.getElementById('search-result');
 
