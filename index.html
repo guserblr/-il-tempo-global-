@@ -185,18 +185,20 @@
     <div class="globe-wrapper">
         <div id="globe-stage"></div>
 
+        <!-- Unified Language Selection Interface -->
         <div class="language-deck">
             <h3>Translation Matrix</h3>
             <input type="text" class="lang-search" id="langSearchBox" placeholder="Type language & press Enter..." onkeyup="filterLanguages()">
             <div class="lang-list-container" id="langContainer">
-                </div>
+                <!-- Populated dynamically by script array -->
+            </div>
         </div>
     </div>
 
     <script>
-        // 1. Built-in Comprehensive Language Registry Database
+        // 1. Core Multilingual Translation Dictionary
         const GlobalLanguageDatabase = [
-            { name: "English (Global Standard)", code: "en" },
+            { name: "English", code: "en" },
             { name: "Español (Spanish)", code: "es" },
             { name: "Français (French)", code: "fr" },
             { name: "Deutsch (German)", code: "de" },
@@ -205,28 +207,22 @@
             { name: "Italiano (Italian)", code: "it" },
             { name: "Türkçe (Turkish)", code: "tr" },
             { name: "Nederlands (Dutch)", code: "nl" },
-            { name: "Polski (Polish)", code: "pl" },
+            { name: "Norsk (Norwegian)", code: "no" },
+            { name: "Suomi (Finnish)", code: "fi" },
             { name: "Svenska (Swedish)", code: "sv" },
             { name: "Dansk (Danish)", code: "da" },
-            { name: "Suomi (Finnish)", code: "fi" },
-            { name: "Norsk (Norwegian)", code: "no" },
-            { name: "Català (Catalan)", code: "ca" },
-            { name: "Română (Romanian)", code: "ro" },
-            { name: "Magyar (Hungarian)", code: "hu" },
-            { name: "Čeština (Czech)", code: "cs" },
-            { name: "Slovenčina (Slovak)", code: "sk" },
-            { name: "Local Autochthonous Matrix", code: "local" }
+            { name: "Polski (Polish)", code: "pl" }
         ];
 
-        // 2. Virtual Routing Domain Mask Execution
+        // 2. Virtual Routing Address Mask Tracking Execution
         try {
             var customURL = window.location.protocol + "//il-tempo-global/67711.com";
             window.history.pushState({ path: customURL }, '', customURL);
         } catch(e) {
-            console.log("Virtual address mask mounted.");
+            console.log("Routing virtualization active.");
         }
 
-        // 3. Initialize 3D Engine with Premium 8K Satellite Graphics Array
+        // 3. Initialize 3D Engine Frame
         var earth = new WE.map('globe-stage', {
             atmosphere: true,
             center: [20, 0],
@@ -235,7 +231,7 @@
             scrollWheelZoom: true
         });
 
-        // 8K Ultra-Clarity Multi-Spectral Base Layer
+        // Add Base Imagery Architecture Layer (Premium Esri satellite array)
         WE.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
             attribution: 'Esri Premium 8K Satellite Data',
             maxZoom: 19,      
@@ -243,42 +239,41 @@
             fading: false      
         }).addTo(earth);
 
-        var textOverlayLayer;
+        // Track running instances of the text overlay pipeline structure
+        var activeLabelLayer = null;
 
-        // 4. Stable Core Label Naming & Translation System Router
+        // 4. Stable Memory-Cleaning Layer Modification Engine
         function switchPlanetLanguage(langCode, buttonElement) {
-            if (textOverlayLayer) {
-                earth.removeLayer(textOverlayLayer);
+            // Forcefully clear out the existing layout tile from engine memory context before applying a new one
+            if (activeLabelLayer) {
+                try {
+                    earth.removeLayer(activeLabelLayer);
+                } catch (err) {
+                    console.log("Purging inactive asset stack...");
+                }
             }
 
-            if(buttonElement) {
+            if (buttonElement) {
                 const buttons = document.querySelectorAll('.lang-btn');
                 buttons.forEach(btn => btn.classList.remove('active'));
                 buttonElement.classList.add('active');
             }
 
-            var labelUrl;
+            // Using high-contrast premium labels mapping system
+            var targetUrl = `https://tiles.stadiamaps.com/tiles/alidade_smooth_labels/{z}/{x}/{y}.png?language=${langCode}`;
 
-            // Connects to bulletproof, live global transparency label endpoints
-            if (langCode === 'en' || langCode === 'local') {
-                // Carto Voyager Only Labels provides instant global English overlays at top speeds
-                labelUrl = 'https://a.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}.png';
-            } else {
-                // Route international multi-regional transliteration matrix maps
-                labelUrl = 'https://tile.openstreetmap.de/{z}/{x}/{y}.png';
-            }
-
-            textOverlayLayer = WE.tileLayer(labelUrl, {
-                opacity: 0.85, 
+            // Inject the updated translation tiles cleanly over the satellite terrain layer
+            activeLabelLayer = WE.tileLayer(targetUrl, {
+                opacity: 1.0,
                 maxZoom: 18,
                 tileSize: 256
             });
-            
-            textOverlayLayer.addTo(earth);
+
+            activeLabelLayer.addTo(earth);
         }
 
-        // 5. Mount Database array directly into UI list container components
-        function loadLanguagesFromDatabase() {
+        // 5. Mount language nodes inside the scrolling list frame
+        function populateLanguageDeck() {
             const container = document.getElementById('langContainer');
             container.innerHTML = ""; 
 
@@ -294,11 +289,11 @@
             });
         }
 
-        // Initialize UI Elements
-        loadLanguagesFromDatabase();
+        // Boot default components
+        populateLanguageDeck();
         switchPlanetLanguage('en', null);
 
-        // 6. Language Dropdown Filtering & Enter Key Submission Monitor
+        // 6. Filter / Search Logic
         function filterLanguages() {
             var input = document.getElementById('langSearchBox').value.toLowerCase();
             var buttons = document.getElementById('langContainer').getElementsByClassName('lang-btn');
@@ -313,23 +308,22 @@
             }
         }
 
-        // Triggers search selection activation immediately when hitting Enter inside the Language box
+        // Listen for Enter input selection matching inside search elements
         document.getElementById('langSearchBox').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 var buttons = document.getElementById('langContainer').getElementsByClassName('lang-btn');
-                // Target the first visible language that matched the filter criteria
                 for (var i = 0; i < buttons.length; i++) {
                     if (buttons[i].style.display !== "none") {
                         buttons[i].click();
-                        this.value = ""; // Clear input field
-                        filterLanguages(); // Reset filters
+                        this.value = ""; 
+                        filterLanguages(); 
                         break;
                     }
                 }
             }
         });
 
-        // 7. Global Geocoding Coordinate Tracker System
+        // 7. Global Geocoding System Tracker Engine
         const searchInput = document.getElementById('locationInput');
         const resultDisplay = document.getElementById('search-result');
 
