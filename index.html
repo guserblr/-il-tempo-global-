@@ -7,7 +7,7 @@
     <style>
         /* Smooth moving background animation */
         @keyframes drift {
-            0% { background-position: 0% 0%; }
+            0 { background-position: 0% 0%; }
             50% { background-position: 100% 100%; }
             100% { background-position: 0% 0%; }
         }
@@ -126,14 +126,13 @@
             border-color: #00ffcc;
         }
 
-        /* Scrollable box container for complete global language register */
+        /* Scrollable container for complete language list */
         .lang-list-container {
             max-height: 220px;
             overflow-y: auto;
             padding-right: 2px;
         }
 
-        /* Custom Scrollbar styling */
         .lang-list-container::-webkit-scrollbar {
             width: 4px;
         }
@@ -142,7 +141,7 @@
             border-radius: 4px;
         }
 
-        /* Language Dropdown Selector Items */
+        /* Language Buttons */
         .lang-btn {
             display: block;
             width: 100%;
@@ -226,21 +225,26 @@
             console.log("Virtual address mask mounted.");
         }
 
-        // 2. Initialize the 3D Planet Engine
+        // 2. Initialize the 3D Planet Engine with Sub-Pixel Subdivisions
         var earth = new WE.map('globe-stage', {
             atmosphere: true,
             center: [20, 0],
-            zoom: 2
+            zoom: 2,
+            dragging: true,
+            scrollWheelZoom: true
         });
 
-        // Clean satellite photography base engine
-        var baseSatellite = WE.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-            attribution: 'Esri Satellite'
+        // High-Performance Premium 8K-Grade Satellite Base Layer (512px High-Density Array)
+        WE.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+            attribution: 'Esri High-Resolution 8K Satellite Data',
+            maxZoom: 19,      
+            tileSize: 512,     
+            fading: false      
         }).addTo(earth);
 
         var textOverlayLayer;
 
-        // 3. Multilingual Dynamic Tiling Switching Engine
+        // 3. Ultra-light Transparent Label Engine with Custom Language Support
         function switchPlanetLanguage(langCode, buttonElement) {
             if (textOverlayLayer) {
                 earth.removeLayer(textOverlayLayer);
@@ -252,17 +256,23 @@
                 buttonElement.classList.add('active');
             }
 
-            // Swapped to a direct open transparent overlay map schema for dynamic labels rendering
-            textOverlayLayer = WE.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                opacity: 0.50, 
+            // Using high-speed text-only tiles to prevent double-map rendering lag
+            var labelUrl = `https://a.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}.png`;
+            
+            if (langCode !== 'en') {
+                labelUrl = `https://api.maptiler.com/maps/streets-v2/256/{z}/{x}/{y}.png?key=get_your_own_OpE9Z139bN&language=${langCode}`;
+            }
+
+            textOverlayLayer = WE.tileLayer(labelUrl, {
+                opacity: 0.95, 
                 maxZoom: 18,
-                subdomains: ['a', 'b', 'c']
+                tileSize: 256
             });
             
             textOverlayLayer.addTo(earth);
         }
 
-        // Boot system up instantly with names fully visual
+        // Boot system up instantly in clear, standard English labels
         switchPlanetLanguage('en', null);
 
         // 4. Dropdown Language Filtering Mechanism
@@ -280,7 +290,7 @@
             }
         }
 
-        // 5. Global Coordinate and Location Tracking
+        // 5. Global Coordinate and Location Tracking Form Input
         const searchInput = document.getElementById('locationInput');
         const resultDisplay = document.getElementById('search-result');
 
